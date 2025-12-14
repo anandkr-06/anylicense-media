@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  nest-upload-api:
+    container_name: nestjs-file-upload
+    build: .
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    external: true
