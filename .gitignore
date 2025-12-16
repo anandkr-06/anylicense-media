@@ -142,3 +142,7 @@ documents
 src/seeders/*
 seed.ts
 .DS_Store
+uploads
+uploads/*
+files_uploads.json
+generate-jwt.js
