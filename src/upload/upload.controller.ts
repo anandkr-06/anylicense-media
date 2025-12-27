@@ -6,6 +6,7 @@ import {
   UseInterceptors,
   Body,
   Req,
+  Get as GET,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
@@ -37,6 +38,22 @@ export class UploadController {
       userId,
       filename: file.filename,
       path: file.path,
+    };
+  }
+
+  //static token
+  @GET('get-token')
+  getToken() {
+    const jwt = require('jsonwebtoken');
+    require('dotenv').config();
+    const payload = {
+      userId: 'USER_123',
+      email: 'user@example.com',
+      roles: ['USER'],
+    };
+    
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return {token
     };
   }
 
