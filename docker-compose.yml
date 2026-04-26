@@ -10,8 +10,15 @@ services:
       - ./uploads:/app/uploads
     networks:
       - app-network
+    depends_on:
+      - clamav
     restart: unless-stopped
 
-networks:
-  app-network:
-    external: true
+  clamav:
+    container_name: clamav
+    image: clamav/clamav:latest
+    ports:
+      - "3310:3310"
+    networks:
+      - app-network
+    restart: unless-stopped
