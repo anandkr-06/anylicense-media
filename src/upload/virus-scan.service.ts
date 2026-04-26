@@ -13,11 +13,16 @@ export class VirusScanService implements OnModuleInit {
         removeInfected: false,
         quarantineInfected: false,
         debugMode: false,
+
         clamdscan: {
           socket: false,
-          host: '127.0.0.1',
+          host: 'clamav',   // 🔥 important
           port: 3310,
           timeout: 30000,
+        },
+
+        clamscan: {
+          path: null,
         },
       });
 
@@ -32,16 +37,16 @@ export class VirusScanService implements OnModuleInit {
     if (!this.clamscan) {
       throw new Error('ClamAV not initialized');
     }
-  
+
     try {
       this.logger.log(`Scanning file: ${filePath}`);
-  
+
       const { isInfected, viruses } = await this.clamscan.scanFile(filePath);
-  
+
       if (isInfected) {
         this.logger.warn(`Virus detected in file: ${filePath} → ${viruses}`);
       }
-  
+
       return isInfected;
     } catch (err) {
       this.logger.error(`Scan failed for file: ${filePath}`, err);
