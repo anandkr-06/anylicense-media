@@ -6,5 +6,6 @@ import { UploadModule } from './upload/upload.module';
   imports: [UploadModule],
   controllers: [AppController],
   providers: [AppService],
+  
 })
 export class AppModule {}
