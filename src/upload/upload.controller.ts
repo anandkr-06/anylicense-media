@@ -6,6 +6,7 @@ import {
   UseInterceptors,
   Body,
   BadRequestException,
+  Get,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { VirusScanService } from './virus-scan.service';
@@ -13,7 +14,7 @@ import { safeUnlink } from 'src/utils/file.util';
 
 @Controller('upload')
 export class UploadController {
-  constructor(private readonly virusScanService: VirusScanService) {}
+  constructor(private readonly virusScanService: VirusScanService) { }
 
   // ✅ SINGLE FILE UPLOAD
   @Post('file')
@@ -31,7 +32,7 @@ export class UploadController {
     if (!file) {
       throw new BadRequestException('File upload failed');
     }
-    
+
     try {
       //const isInfected = await this.virusScanService.scanFile(file.path);
       const isInfected = await Promise.race([
@@ -59,16 +60,16 @@ export class UploadController {
         path: file.path,
         status: 'success',
       };
-    } 
+    }
     catch (err) {
       if (file?.path) {
         await safeUnlink(file.path);
       }
-    
+
       if (err instanceof Error && err.message === 'Scan timeout') {
         throw new BadRequestException('File scan timeout, try again');
       }
-    
+
       throw new BadRequestException('Virus scan failed, upload rejected');
     }
   }
@@ -84,9 +85,9 @@ export class UploadController {
   ) {
 
     if (!fileFor) {
-  throw new BadRequestException('fileFor is required');
-}
-    
+      throw new BadRequestException('fileFor is required');
+    }
+
     if (!files || files.length === 0) {
       throw new BadRequestException('No files uploaded');
     }
@@ -114,20 +115,20 @@ export class UploadController {
             size: file.size,
             mimetype: file.mimetype,
           };
-        } 
+        }
         catch (err) {
           if (file?.path) {
             await safeUnlink(file.path);
           }
-        
+
           if (err instanceof Error && err.message === 'Scan timeout') {
             throw new BadRequestException('File scan timeout, try again');
           }
-        
+
           throw new BadRequestException('Virus scan failed, upload rejected');
         }
       }
-    ),
+      ),
     );
 
     const cleanFiles = results.filter(Boolean);
@@ -141,5 +142,18 @@ export class UploadController {
       status: 'success',
     };
   }
-  
+
+  //static token
+  @Get('get-token')
+  getToken() {
+    const jwt = require('jsonwebtoken');
+    require('dotenv').config();
+    const payload = {
+      userId: 'USER_123',
+      email: 'user@example.com',
+      roles: ['USER'],
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return {token};
+  }
 }
