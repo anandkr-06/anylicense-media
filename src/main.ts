@@ -14,7 +14,9 @@ async function bootstrap() {
       'http://localhost:3200', // Next.js default
       'http://localhost:3100', // if Next runs on 3001
       'https://dev.anylicence.com', // Next.js default
-      'https://devadmin.anylicence.com' //admin
+      'https://devadmin.anylicence.com', //admin
+      'https://anylicence.com.au', // Next.js default
+      'https://webadmin.anylicence.com.au' //admin
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
