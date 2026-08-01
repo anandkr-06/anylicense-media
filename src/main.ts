@@ -16,6 +16,7 @@ async function bootstrap() {
     'https://dev.anylicence.com',
     'https://devadmin.anylicence.com',
     'https://anylicence.com.au',
+    'https://www.anylicence.com.au',
     'https://webadmin.anylicence.com.au'
   ];
 
